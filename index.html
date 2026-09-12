@@ -123,72 +123,84 @@
       <p>쓸 것만 남긴, 작고 가벼운 유틸리티 앱들을 만듭니다.</p>
     </header>
 
-    <div class="app-list">
-
-      <div class="app-card">
-        <div class="app-icon">🧮</div>
-        <div class="app-body">
-          <h2>Calculator</h2>
-          <p>베이직 · 공학용 · 퍼센트 계산기를 한 앱에</p>
-        </div>
-        <div class="app-links">
-          <a href="https://play.google.com/store/apps/details?id=com.ezapp.calculator">Play 스토어</a>
-          <a class="dim" href="https://helpezapp.github.io/privacy-policy/calculator.html">개인정보처리방침</a>
-        </div>
-      </div>
-
-      <div class="app-card">
-        <div class="app-icon">🛒</div>
-        <div class="app-body">
-          <h2>Shopping List</h2>
-          <p>장보기 목록 · 할 일 목록 · 체크리스트</p>
-        </div>
-        <div class="app-links">
-          <a href="https://play.google.com/store/apps/details?id=co.kr.ezapp.shoppinglist">Play 스토어</a>
-          <a class="dim" href="https://helpezapp.github.io/privacy-policy/shopping-list.html">개인정보처리방침</a>
-        </div>
-      </div>
-
-      <div class="app-card">
-        <div class="app-icon">⌨️</div>
-        <div class="app-body">
-          <h2>Fidget Keyboard</h2>
-          <p>탭감 좋은 클릭 콤보로 가볍게 스트레스 해소</p>
-        </div>
-        <div class="app-links">
-          <a href="https://play.google.com/store/apps/details?id=com.ezapp.clicker">Play 스토어</a>
-          <a class="dim" href="https://helpezapp.github.io/privacy-policy/fidget-keyboard.html">개인정보처리방침</a>
-        </div>
-      </div>
-
-      <div class="app-card">
-        <div class="app-icon">💱</div>
-        <div class="app-body">
-          <h2>Currency Converter</h2>
-          <p>실시간 환율로 빠르게 환전 계산</p>
-        </div>
-        <div class="app-links">
-          <a href="https://play.google.com/store/apps/details?id=com.ezapp.currencyconverter">Play 스토어</a>
-          <a class="dim" href="https://helpezapp.github.io/privacy-policy/currency-converter.html">개인정보처리방침</a>
-        </div>
-      </div>
-
-      <div class="app-card">
-        <div class="app-icon">🥦</div>
-        <div class="app-body">
-          <h2>StillGood?</h2>
-          <p>유통기한을 추적하고 음식물 낭비를 줄여요</p>
-        </div>
-        <div class="app-links">
-          <a href="https://play.google.com/store/apps/details?id=com.ezapp.stillgood">Play 스토어</a>
-        </div>
-      </div>
-
-    </div>
+    <div class="app-list" id="appList"></div>
 
     <footer>
       문의: <a href="mailto:help.ezapp@gmail.com">help.ezapp@gmail.com</a>
     </footer>
   </div>
+
+  <script>
+    // 앱 추가할 때 이 배열에 한 줄만 추가하면 됩니다. (package만 있으면 playUrl은 자동 생성)
+    const APPS = [
+      {
+        icon: "🧮",
+        name: "Calculator",
+        desc: "베이직 · 공학용 · 퍼센트 계산기를 한 앱에",
+        package: "com.ezapp.calculator",
+        privacyUrl: "https://helpezapp.github.io/privacy-policy/calculator.html",
+      },
+      {
+        icon: "🛒",
+        name: "Shopping List",
+        desc: "장보기 목록 · 할 일 목록 · 체크리스트",
+        package: "co.kr.ezapp.shoppinglist",
+        privacyUrl: "https://helpezapp.github.io/privacy-policy/shopping-list.html",
+      },
+      {
+        icon: "⌨️",
+        name: "Fidget Keyboard",
+        desc: "탭감 좋은 클릭 콤보로 가볍게 스트레스 해소",
+        package: "com.ezapp.clicker",
+        privacyUrl: "https://helpezapp.github.io/privacy-policy/fidget-keyboard.html",
+      },
+      {
+        icon: "💱",
+        name: "Currency Converter",
+        desc: "실시간 환율로 빠르게 환전 계산",
+        package: "com.ezapp.currencyconverter",
+        privacyUrl: "https://helpezapp.github.io/privacy-policy/currency-converter.html",
+      },
+      {
+        icon: "🥦",
+        name: "StillGood?",
+        desc: "유통기한을 추적하고 음식물 낭비를 줄여요",
+        package: "com.ezapp.stillgood",
+        // privacyUrl 없음 — 앱 안에서 바로 보여주는 방식이라 별도 호스팅 페이지가 없음
+      },
+      // 👉 새 앱 추가 예시:
+      // {
+      //   icon: "🎯",
+      //   name: "새 앱 이름",
+      //   desc: "한 줄 설명",
+      //   package: "com.ezapp.newapp",
+      //   privacyUrl: "https://helpezapp.github.io/privacy-policy/new-app.html",
+      // },
+    ];
+
+    const list = document.getElementById("appList");
+    for (const app of APPS) {
+      const card = document.createElement("div");
+      card.className = "app-card";
+
+      const playUrl = "https://play.google.com/store/apps/details?id=" + app.package;
+      const privacyLink = app.privacyUrl
+        ? `<a class="dim" href="${app.privacyUrl}">개인정보처리방침</a>`
+        : "";
+
+      card.innerHTML = `
+        <div class="app-icon">${app.icon}</div>
+        <div class="app-body">
+          <h2>${app.name}</h2>
+          <p>${app.desc}</p>
+        </div>
+        <div class="app-links">
+          <a href="${playUrl}">Play 스토어</a>
+          ${privacyLink}
+        </div>
+      `;
+      list.appendChild(card);
+    }
+  </script>
 </body>
 </html>
